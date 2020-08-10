@@ -1,6 +1,6 @@
 
 # README.Generator 
-example
+This generator creates a command-line application that dynamically generates a professional README.md from a user's input using the Inquirer package.
 
 * [Installation](#Installation)
 
@@ -14,28 +14,10 @@ example
 
 * [Tests](#Tests)
 ## Installation
-example
+Before you start you will need to install 3 things. 
+1. npm i init
+2. npm i axios
+3. npm i inquirer
 ## Instructions
-example
+From there, you run the app by typing node index.js into the terminal or gitbash and press enter. 
 ```
-example
-```
-## License 
-This project is licensed under the example - see the example file for details
-## Contributors
-undefined
-            
- <img src="https://avatars1.githubusercontent.com/u/57936?v=4" alt="drawing" width="150" display="inline"/> example  GitHubLink: https://github.com/example
-## Tests
-example
-## Author 
-
-![ProfileImage](https://avatars1.githubusercontent.com/u/64044377?v=4)
-
-**APopp524**
-
-Email: null
-
-Location:Kansas City
-
-GitHub: https://github.com/APopp524

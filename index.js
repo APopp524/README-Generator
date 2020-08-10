@@ -1,14 +1,20 @@
+
+
 const inquirer = require("inquirer");
 const axios = require("axios");
 const fs = require('fs');
 const path = require('path');
+
+// Function to start questions //
 async function run(){
     console.log(`starting`);
     const userResponse = await inquirer
+    
+    // Prompt questions //
     .prompt([
         {
             type: "input",
-            message: "What is your GitHub user name?",
+            message: "What is your GitHub username?",
             name: "username"
         },
         {
@@ -18,23 +24,18 @@ async function run(){
         },
         {
             type: "input",
-            message: "Provide detail description",
+            message: "Provide detail description of your Project.",
             name: "projectDescription"
         },
         {
             type: "input",
-            message: "What are the steps required to install your project? Provide a step-by-step description of how to get the development environment running.",
+            message: "Explain the process to install the application.",
             name: "installationProcess"
         },
         {
             type: "input",
-            message: "Provide instructions for use.",
+            message: "Provide instrucitons on how to run the application.",
             name: "instruction"
-        },
-        {
-            type: "input",
-            message: "Provide instructions examples for use.",
-            name: "instructionExample"
         },
         {
             type: "input",
@@ -64,7 +65,6 @@ async function run(){
         const projectDescription = userResponse.projectDescription;
         const installationProcess = userResponse.installationProcess;
         const instruction = userResponse.instruction;
-        const instructionExample = userResponse.instructionExample;
         const licenseName = userResponse.licenseName;
         const licenseUrl = userResponse.licenseUrl;
         const contributorUserNames = userResponse.contributorsGitUserName;
@@ -106,8 +106,6 @@ ${projectDescription}
 ${installationProcess}
 ## Instructions
 ${instruction}
-\`\`\`
-${instructionExample}
 \`\`\`
 ## License 
 This project is licensed under the ${licenseName} - see the ${licenseUrl} file for details

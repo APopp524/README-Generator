@@ -14,21 +14,10 @@ example
 
 * [Tests](#Tests)
 ## Installation
-example
+Before you start you will need to install 3 things. 
+1. npm i init
+2. npm i axios
+3. npm i inquirer
 ## Instructions
-example
+From there, you run the app by typing node index.js into the terminal or gitbash and press enter. 
 ```
-
-## Tests
-example
-## Author 
-
-![ProfileImage](https://avatars1.githubusercontent.com/u/64044377?v=4)
-
-**APopp524**
-
-Email: null
-
-Location:Kansas City
-
-GitHub: https://github.com/APopp524

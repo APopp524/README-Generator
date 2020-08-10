@@ -1,76 +1,128 @@
 const inquirer = require("inquirer");
+const axios = require("axios");
 const fs = require('fs');
 const path = require('path');
-
-
-
-
-
-
-// array of questions for user
-const questions = [
-
-    {
-        type: "input",
-        message: "What is your GitHub username?",
-        name: "username"
-    },
-    {
-        type: "input",
-        message: "What is your Project Title?",
-        name: "projectTittle"
-    },
-    {
-        type: "input",
-        message: "Enter a detailed project description. ",
-        name: "projectDescription"
-    },
-    {
-        type: "input",
-        message: "Enter step by step instructions on how to run the applicaiton. ",
-        name: "installationProcess"
-    },
-    {
-        type: "input",
-        message: "Provide instructions for the applicaiton.",
-        name: "instruction"
-    },
-    {
-        type: "input",
-        message: "Provide instructions examples for the application. ",
-        name: "instructionExample"
-    },
-    {
-        type: "input",
-        message: "Enter the license name.  ",
-        name: "licenseName"
-    },
-    {
-        type: "input",
-        message: "Enter the license URL. ",
-        name: "licenseUrl"
-    },
-    {
-        type: "input",
-        message: "If there were other Github contributor(s) enter them here.",
-        name: "contributorsGitHub"
-    },
-    {
-        type: "input",
-        message: "Provide examples on how to run tests.",
-        name: "tests"
+async function run(){
+    console.log(`starting`);
+    const userResponse = await inquirer
+    .prompt([
+        {
+            type: "input",
+            message: "What is your GitHub user name?",
+            name: "username"
+        },
+        {
+            type: "input",
+            message: "What is your Project Title?",
+            name: "projectTitle"
+        },
+        {
+            type: "input",
+            message: "Provide detail description",
+            name: "projectDescription"
+        },
+        {
+            type: "input",
+            message: "What are the steps required to install your project? Provide a step-by-step description of how to get the development environment running.",
+            name: "installationProcess"
+        },
+        {
+            type: "input",
+            message: "Provide instructions for use.",
+            name: "instruction"
+        },
+        {
+            type: "input",
+            message: "Provide instructions examples for use.",
+            name: "instructionExample"
+        },
+        {
+            type: "input",
+            message: "Enter the License name ",
+            name: "licenseName"
+        },
+        {
+            type: "input",
+            message: "Enter the License URL. ",
+            name: "licenseUrl"
+        },
+        {
+            type: "input",
+            message: "List any other GitHub contributor(s)",
+            name: "contributorsGitUserName"
+        },
+        {
+            type: "input",
+            message: "Provide examples on how to run tests.",
+            name: "tests"
+        }
+        ]);
+        console.log(`starting`);
+        console.log(userResponse);
+        const gitUsername = userResponse.username;
+        const projectTitle = userResponse.projectTitle;
+        const projectDescription = userResponse.projectDescription;
+        const installationProcess = userResponse.installationProcess;
+        const instruction = userResponse.instruction;
+        const instructionExample = userResponse.instructionExample;
+        const licenseName = userResponse.licenseName;
+        const licenseUrl = userResponse.licenseUrl;
+        const contributorUserNames = userResponse.contributorsGitUserName;
+        const tests = userResponse.tests;
+            // fetching data from git
+            // user
+        const gitResponse = await axios.get(`https://api.github.com/users/${gitUsername}`);
+        const gitData = gitResponse.data;
+        const gitName = gitData.login;
+        const gitEmail = gitData.email;
+        const gitlocation = gitData.location;
+        const gitUrl = gitData.html_url;
+        const gitProfileImage = gitData.avatar_url;
+            // contributor
+        const contributorUserNamesArray = contributorUserNames.split(",");
+        console.log(contributorUserNamesArray);
+        // const  = listOfContributorsUserNames.
+        // contributorsGitUserName
+        var resultContributor;
+        for (i=0; i<contributorUserNamesArray.length; i++){
+            var contributorsGitUserName = contributorUserNamesArray[i]
+            const gitResponse2 = await axios.get(`https://api.github.com/users/${contributorsGitUserName}`);
+            var gitContribuProfileImage = gitResponse2.data.avatar_url;
+            var gitContribuUrl = gitResponse2.data.html_url;
+            var gitContribuEmail = gitResponse2.data.email;
+            var resultContributor = resultContributor + (`
+            \n <img src="${gitContribuProfileImage}" alt="drawing" width="150" display="inline"/> ${contributorsGitUserName}  GitHubLink: ${gitContribuUrl}`);
+        }
+        var result = (`
+# ${projectTitle} 
+${projectDescription}
+\n* [Installation](#Installation)
+\n* [Instructions](#Instructions)
+\n* [License](#License)
+\n* [Contributors](#Contributors)
+\n* [Author](#Author)
+\n* [Tests](#Tests)
+## Installation
+${installationProcess}
+## Instructions
+${instruction}
+\`\`\`
+${instructionExample}
+\`\`\`
+## License 
+This project is licensed under the ${licenseName} - see the ${licenseUrl} file for details
+## Contributors
+${resultContributor}
+## Tests
+${tests}
+## Author 
+\n![ProfileImage](${gitProfileImage})
+\n**${gitName}**
+\nEmail: ${gitEmail}
+\nLocation:${gitlocation}
+\nGitHub: ${gitUrl}
+`)
+var writeResult = fs.writeFileSync(path.join(__dirname, '../README-Generator', 'READMe.md'), result )
+console.log("README.md has been created...")
     }
-
-];
-
-// function to write README file
-function writeToFile(fileName, data) {
-}
-
-// function to initialize program
-function init() {
-
-}
-
-// function call to initialize program
-init();
+run();

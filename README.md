@@ -20,4 +20,10 @@ Before you start you will need to install 3 things.
 3. npm i inquirer
 ## Instructions
 From there, you run the app by typing node index.js into the terminal or gitbash and press enter. 
-```
+
+
+
+![Untitled_ Aug 10, 2020 2_15 PM](https://user-images.githubusercontent.com/64044377/89821542-5c255200-db14-11ea-871a-6aff07ca8d82.gif)
+
+
+![Screen Shot 2020-08-10 at 1 47 28 PM](https://user-images.githubusercontent.com/64044377/89819060-6e04f600-db10-11ea-9fca-7456922e0809.png)

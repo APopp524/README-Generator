@@ -69,8 +69,6 @@ async function run(){
         const licenseUrl = userResponse.licenseUrl;
         const contributorUserNames = userResponse.contributorsGitUserName;
         const tests = userResponse.tests;
-            // fetching data from git
-            // user
         const gitResponse = await axios.get(`https://api.github.com/users/${gitUsername}`);
         const gitData = gitResponse.data;
         const gitName = gitData.login;
@@ -78,11 +76,10 @@ async function run(){
         const gitlocation = gitData.location;
         const gitUrl = gitData.html_url;
         const gitProfileImage = gitData.avatar_url;
-            // contributor
         const contributorUserNamesArray = contributorUserNames.split(",");
         console.log(contributorUserNamesArray);
-        // const  = listOfContributorsUserNames.
-        // contributorsGitUserName
+        
+        // Github contributors for Project //
         var resultContributor;
         for (i=0; i<contributorUserNamesArray.length; i++){
             var contributorsGitUserName = contributorUserNamesArray[i]

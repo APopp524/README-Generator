@@ -1,5 +1,4 @@
 
-
 const inquirer = require("inquirer");
 const axios = require("axios");
 const fs = require('fs');
@@ -58,6 +57,8 @@ async function run(){
             name: "tests"
         }
         ]);
+
+        // constants for prompted questions //
         console.log(`starting`);
         console.log(userResponse);
         const gitUsername = userResponse.username;
@@ -86,9 +87,8 @@ async function run(){
             const gitResponse2 = await axios.get(`https://api.github.com/users/${contributorsGitUserName}`);
             var gitContribuProfileImage = gitResponse2.data.avatar_url;
             var gitContribuUrl = gitResponse2.data.html_url;
-            var gitContribuEmail = gitResponse2.data.email;
             var resultContributor = resultContributor + (`
-            \n <img src="${gitContribuProfileImage}" alt="drawing" width="150" display="inline"/> ${contributorsGitUserName}  GitHubLink: ${gitContribuUrl}`);
+            \n <img src="${gitContribuProfileImage}" alt="profile" width="100" display="inline"/> ${contributorsGitUserName}  GitHubLink: ${gitContribuUrl}`);
         }
         var result = (`
 # ${projectTitle} 

@@ -10,15 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
-    "inquirer": "^6.5.2"
-  },
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/APopp524/README-Generator.git"
-  },
-  "bugs": {
-    "url": "https://github.com/APopp524/README-Generator/issues"
-  },
-  "homepage": "https://github.com/APopp524/README-Generator#readme"
+    "dotenv": "^8.0.0",
+    "electron": "^5.0.3",
+    "electron-html-to": "^2.6.0",
+    "inquirer": "^6.5.2",
+    "open": "^6.3.0"
+  }
 }

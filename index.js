@@ -1,123 +1,79 @@
+const prompt = require('inquirer').createPromptModule()
+const fs = require('fs')
 
-const inquirer = require("inquirer");
-const axios = require("axios");
-const fs = require('fs');
-const path = require('path');
+const api = require('./utils/api.js')
+const generateMarkdown = require('./utils/generateMarkdown.js')
 
-// Function to start questions //
-async function run(){
-    console.log(`starting`);
-    const userResponse = await inquirer
-    
-    // Prompt questions //
-    .prompt([
-        {
-            type: "input",
-            message: "What is your GitHub username?",
-            name: "username"
-        },
-        {
-            type: "input",
-            message: "What is your Project Title?",
-            name: "projectTitle"
-        },
-        {
-            type: "input",
-            message: "Provide detail description of your Project.",
-            name: "projectDescription"
-        },
-        {
-            type: "input",
-            message: "Explain the process to install the application.",
-            name: "installationProcess"
-        },
-        {
-            type: "input",
-            message: "Provide instrucitons on how to run the application.",
-            name: "instruction"
-        },
-        {
-            type: "input",
-            message: "Enter the License name ",
-            name: "licenseName"
-        },
-        {
-            type: "input",
-            message: "Enter the License URL. ",
-            name: "licenseUrl"
-        },
-        {
-            type: "input",
-            message: "List any other GitHub contributor(s)",
-            name: "contributorsGitUserName"
-        },
-        {
-            type: "input",
-            message: "Provide examples on how to run tests.",
-            name: "tests"
-        }
-        ]);
+const writeToFile = (fileName, data) => {
+  fs.writeFile(fileName + '.md', data, error => error ? console.error(error) : console.log(`${fileName + '.md'} generated!`))
+}
 
-        // constants for prompted questions //
-        console.log(`starting`);
-        console.log(userResponse);
-        const gitUsername = userResponse.username;
-        const projectTitle = userResponse.projectTitle;
-        const projectDescription = userResponse.projectDescription;
-        const installationProcess = userResponse.installationProcess;
-        const instruction = userResponse.instruction;
-        const licenseName = userResponse.licenseName;
-        const licenseUrl = userResponse.licenseUrl;
-        const contributorUserNames = userResponse.contributorsGitUserName;
-        const tests = userResponse.tests;
-        const gitResponse = await axios.get(`https://api.github.com/users/${gitUsername}`);
-        const gitData = gitResponse.data;
-        const gitName = gitData.login;
-        const gitEmail = gitData.email;
-        const gitlocation = gitData.location;
-        const gitUrl = gitData.html_url;
-        const gitProfileImage = gitData.avatar_url;
-        const contributorUserNamesArray = contributorUserNames.split(",");
-        console.log(contributorUserNamesArray);
-        
-        // Github contributors for Project //
-        var resultContributor;
-        for (i=0; i<contributorUserNamesArray.length; i++){
-            var contributorsGitUserName = contributorUserNamesArray[i]
-            const gitResponse2 = await axios.get(`https://api.github.com/users/${contributorsGitUserName}`);
-            var gitContribuProfileImage = gitResponse2.data.avatar_url;
-            var gitContribuUrl = gitResponse2.data.html_url;
-            var resultContributor = resultContributor + (`
-            \n <img src="${gitContribuProfileImage}" alt="profile" width="100" display="inline"/> ${contributorsGitUserName}  GitHubLink: ${gitContribuUrl}`);
-        }
-        var result = (`
-# ${projectTitle} 
-${projectDescription}
-\n* [Installation](#Installation)
-\n* [Instructions](#Instructions)
-\n* [License](#License)
-\n* [Contributors](#Contributors)
-\n* [Author](#Author)
-\n* [Tests](#Tests)
-## Installation
-${installationProcess}
-## Instructions
-${instruction}
-\`\`\`
-## License 
-This project is licensed under the ${licenseName} - see the ${licenseUrl} file for details
-## Contributors
-${resultContributor}
-## Tests
-${tests}
-## Author 
-\n![ProfileImage](${gitProfileImage})
-\n**${gitName}**
-\nEmail: ${gitEmail}
-\nLocation:${gitlocation}
-\nGitHub: ${gitUrl}
-`)
-var writeResult = fs.writeFileSync(path.join(__dirname, '../README-Generator', 'READMe.md'), result )
-console.log("README.md has been created...")
+const init = async _ => {
+  let rmObject = {}
+  do {
+    const { rmUser, rmRepo } = await prompt([
+      {
+        type: 'input',
+        name: 'rmUser',
+        message: 'What is your GitHub user name?'
+      },
+      {
+        type: 'input',
+        name: 'rmRepo',
+        message: 'What is your repository name?'
+      }
+    ])
+    rmObject = await api.getUser(rmUser, rmRepo)
+    if (!rmObject) {
+      console.error('Repo not found!')
+    } else {
+      console.log(`${rmObject.fullName} found!`)
     }
-run();
+  } while (!rmObject)
+  // const ghApi = await api.getUser(rmUser)
+  Object.assign(rmObject, await prompt([
+    // {
+    //   type: 'input',
+    //   name: 'rmTitle',
+    //   message: 'What is the project title?'
+    // },
+    // {
+    //   type: 'input',
+    //   name: 'rmDesc',
+    //   message: 'What is the project description?'
+    // },
+    {
+      type: 'input',
+      name: 'inst',
+      message: 'What are the installation instructions?'
+    },
+    {
+      type: 'input',
+      name: 'use',
+      message: 'What is the usage description?'
+    },
+    // {
+    //   type: 'input',
+    //   name: 'rmLic',
+    //   message: 'What is the license?'
+    // },
+    {
+      type: 'input',
+      name: 'con',
+      message: 'Who are the contributors?'
+    },
+    {
+      type: 'input',
+      name: 'test',
+      message: 'What are the tests?'
+    },
+    {
+      type: 'input',
+      name: 'qs',
+      message: 'Any questions?'
+    }
+  ]))
+  writeToFile(rmObject.title, await generateMarkdown(rmObject))
+}
+
+init()

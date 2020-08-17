@@ -32,16 +32,16 @@ const init = async _ => {
   } while (!rmObject)
   // const ghApi = await api.getUser(rmUser)
   Object.assign(rmObject, await prompt([
-    // {
-    //   type: 'input',
-    //   name: 'rmTitle',
-    //   message: 'What is the project title?'
-    // },
-    // {
-    //   type: 'input',
-    //   name: 'rmDesc',
-    //   message: 'What is the project description?'
-    // },
+     {
+       type: 'input',
+       name: 'rmTitle',
+       message: 'What is the project title?'
+     },
+    {
+       type: 'input',
+       name: 'rmDesc',
+       message: 'What is the project description?'
+     },
     {
       type: 'input',
       name: 'inst',
@@ -52,11 +52,11 @@ const init = async _ => {
       name: 'use',
       message: 'What is the usage description?'
     },
-    // {
-    //   type: 'input',
-    //   name: 'rmLic',
-    //   message: 'What is the license?'
-    // },
+    {
+        type: 'input',
+        name: 'rmLic',
+        message: 'What is the license?'
+     },
     {
       type: 'input',
       name: 'con',

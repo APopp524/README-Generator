@@ -8,7 +8,7 @@
   __Installation:__
   To get started open the files in your computer and type node index.js into the terminal.
   __Usage:__
-  Once node index.js
+  Once node index.js is run. You will be prompted questions that will fill out your README.md. 
   __Contributors:__
   none
   __Tests:__

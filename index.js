@@ -1,7 +1,7 @@
 const prompt = require('inquirer').createPromptModule()
 const fs = require('fs')
 
-const api = require('./utils/api.js')
+const api = require('./utils/username.js')
 const generateMarkdown = require('./utils/generateMarkdown.js')
 
 const writeToFile = (fileName, data) => {
